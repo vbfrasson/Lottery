@@ -6,7 +6,9 @@ from brownie import (
     VRFCoordinatorMock,
     LinkToken,
     Contract,
+    exceptions,
 )
+import pytest
 
 FORKED_LOCAL_ENVIRONMENTS = ["mainnet-fork-dev"]
 LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["development", "ganache-local"]
@@ -81,3 +83,14 @@ def fund_with_link(
     tx.wait(1)
     print("Contract Funded")
     return tx
+
+
+def skip_unit_test():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip()
+
+
+def should_revert(_input):
+    with pytest.raises(exceptions.VirtualMachineError):
+        _input
+    return _input
