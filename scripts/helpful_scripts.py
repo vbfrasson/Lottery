@@ -90,7 +90,11 @@ def skip_unit_test():
         pytest.skip()
 
 
-def should_revert(_input):
-    with pytest.raises(exceptions.VirtualMachineError):
-        _input
-    return _input
+def skip_integration_test():
+    if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip()
+
+
+# def should_revert(_input):
+#     with pytest.raises(exceptions.VirtualMachineError):
+#         _input
